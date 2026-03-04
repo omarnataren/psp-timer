@@ -35,5 +35,16 @@ export function usePlanSummary(projectName) {
       .catch((err) => setError(err.message));
   }, [projectName]);
 
-  return { plan, loading, error, updatePlan };
+  const savePlanRow = useCallback(async (section, phase, planVal, aLaFechaVal) => {
+    const p = Number(planVal) || 0;
+    const a = Number(aLaFechaVal) || 0;
+    setPlan((prev) => ({
+      ...prev,
+      [section]: { ...prev[section], [phase]: { plan: p, aLaFecha: a } },
+    }));
+    await upsertPlanRow(projectName, section, phase, p, a)
+      .catch((err) => setError(err.message));
+  }, [projectName]);
+
+  return { plan, loading, error, updatePlan, savePlanRow };
 }

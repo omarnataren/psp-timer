@@ -5,7 +5,7 @@ function getInitials(email) {
   return email[0].toUpperCase();
 }
 
-export function UserMenu({ user, onSignOut }) {
+export function UserMenu({ user, onSignOut, compact = false }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -34,10 +34,13 @@ export function UserMenu({ user, onSignOut }) {
         <span className="w-7 h-7 bg-black text-white flex items-center justify-center text-xs font-bold rounded-full select-none">
           {getInitials(user?.email)}
         </span>
-        <span className="text-xs font-medium max-w-[150px] truncate hidden sm:block">
-          {user?.email}
-        </span>
-        <svg
+        {!compact && (
+          <span className="text-xs font-medium max-w-[150px] truncate hidden sm:block">
+            {user?.email}
+          </span>
+        )}
+        {!compact && (
+          <svg
           className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
@@ -45,6 +48,7 @@ export function UserMenu({ user, onSignOut }) {
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
+        )}
       </button>
 
       {open && (

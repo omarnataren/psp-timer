@@ -1,27 +1,32 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getProjects, createProject as apiCreate } from '../api/projectsApi';
+import { getAllProjects, createProject as apiCreate } from '../api/projectsApi';
 
-export function useProjects() {
+export function useProjects(user) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const fetch = useCallback(async () => {
+    if (!user) return;
     setLoading(true);
-    getProjects()
-      .then((data) => {
-        setProjects(data);
-        setError(null);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+    try {
+      const data = await getAllProjects();
+      setProjects(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id]);
 
-  const createProject = useCallback(async (name) => {
-    const savedName = await apiCreate(name);
-    setProjects((prev) => [...prev, savedName]);
-    return savedName;
-  }, []);
+  useEffect(() => { fetch(); }, [fetch]);
 
-  return { projects, loading, error, createProject };
+  const createProject = useCallback(async (name, teamId) => {
+    const p = await apiCreate(name, teamId);
+    await fetch();
+    return p;
+  }, [fetch]);
+
+  return { projects, loading, error, createProject, refetch: fetch };
 }

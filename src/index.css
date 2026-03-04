@@ -1,2 +1,17 @@
 @import "tailwindcss";
 
+button, a, select {
+  cursor: pointer;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-130vh); }
+}
+
+@keyframes bubbleFade {
+  0%   { opacity: 0; }
+  10%  { opacity: var(--bubble-opacity, 0.25); }
+  100% { opacity: 0; }
+}
+

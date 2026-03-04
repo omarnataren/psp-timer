@@ -18,6 +18,7 @@ const fromDB = (row) => ({
   removed: row.removed || 'Planning',
   fixTime: row.fix_time ?? 0,
   description: row.description || '',
+  createdBy: row.created_by || null,
 });
 
 export const getDefectLogs = (projectName) =>

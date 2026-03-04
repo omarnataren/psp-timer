@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 export function RegisterPage({ onSignUp, onGoToLogin }) {
   const [email, setEmail] = useState('');
+  const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
@@ -20,10 +21,14 @@ export function RegisterPage({ onSignUp, onGoToLogin }) {
       setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
+    if (!fullName.trim()) {
+      setError('El nombre es requerido.');
+      return;
+    }
 
     setLoading(true);
     try {
-      await onSignUp(email, password);
+      await onSignUp(email, password, fullName.trim());
       setSuccess(true);
     } catch (err) {
       setError(err.message || 'Error al registrarse');
@@ -34,7 +39,7 @@ export function RegisterPage({ onSignUp, onGoToLogin }) {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-8 font-sans">
+      <div className="min-h-screen flex items-center justify-center p-8 font-sans">
         <div className="bg-white border border-black shadow-lg p-10 w-full max-w-md text-center">
           <div className="text-4xl mb-4">✉️</div>
           <h2 className="text-xl font-bold uppercase tracking-wider mb-2">Verifica tu correo</h2>
@@ -55,7 +60,7 @@ export function RegisterPage({ onSignUp, onGoToLogin }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-8 font-sans">
+    <div className="min-h-screen flex items-center justify-center p-8 font-sans">
       <div className="bg-white border border-black shadow-lg p-10 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold uppercase tracking-wider mb-1">PSP Tracker</h1>
@@ -64,6 +69,20 @@ export function RegisterPage({ onSignUp, onGoToLogin }) {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wide mb-1">
+              Nombre completo
+            </label>
+            <input
+              type="text"
+              required
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="w-full border border-black px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+              placeholder="Ana López"
+            />
+          </div>
+
           <div>
             <label className="block text-xs font-bold uppercase tracking-wide mb-1">
               Correo electrónico

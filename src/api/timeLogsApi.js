@@ -20,6 +20,7 @@ const fromDB = (row) => ({
   delta: row.delta ?? 0,
   phase: row.phase || 'Planning',
   comments: row.comments || '',
+  createdBy: row.created_by || null,
 });
 
 export const getTimeLogs = (projectName) =>

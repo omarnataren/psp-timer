@@ -20,7 +20,7 @@ export function LoginPage({ onSignIn, onGoToRegister }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-8 font-sans">
+    <div className="min-h-screen flex items-center justify-center p-8 font-sans">
       <div className="bg-white border border-black shadow-lg p-10 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold uppercase tracking-wider mb-1">PSP Tracker</h1>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PHASES, DEFECT_TYPES, INITIAL_DEFECT_ROW } from '../constants';
 import { ConfirmDialog } from './ConfirmDialog';
 
-export function DefectRecordingLog({ logs, loading, error, addLog, updateLog, deleteLog, headerDate }) {
+export function DefectRecordingLog({ logs, loading, error, addLog, updateLog, deleteLog, headerDate, profiles = {} }) {
   const [drafts, setDrafts] = useState({});
   const [saving, setSaving] = useState({});
   const [confirmId, setConfirmId] = useState(null);
@@ -49,8 +49,8 @@ export function DefectRecordingLog({ logs, loading, error, addLog, updateLog, de
         <table className="w-full border-collapse border border-black mb-6">
           <thead>
             <tr>
-              {['#', 'Date', 'Type', 'Injected', 'Removed', 'Fix Time (min)', 'Description', ''].map((h) => (
-                <th key={h} className="border border-black p-2 text-center text-sm font-bold bg-gray-50">{h}</th>
+              {['#', 'Date', 'Type', 'Injected', 'Removed', 'Fix Time', 'Description', 'Por', ''].map((h) => (
+                <th key={h} className="border border-black p-1.5 text-center text-xs font-bold bg-gray-50 whitespace-nowrap">{h}</th>
               ))}
             </tr>
           </thead>
@@ -61,43 +61,46 @@ export function DefectRecordingLog({ logs, loading, error, addLog, updateLog, de
               const isSaving = !!saving[log.id];
               return (
               <tr key={log.id} className={isDirty ? 'bg-yellow-50' : 'hover:bg-gray-50'}>
-                <td className="border border-black p-2 text-center font-mono font-bold bg-gray-100 w-8">{idx + 1}</td>
+                <td className="border border-black p-1 text-center font-mono text-xs bg-gray-100 w-6">{idx + 1}</td>
                 <td className="border border-black p-0">
                   <input type="date" value={row.date}
                     onChange={(e) => handleChange(log.id, 'date', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none" />
+                    className="w-full p-1 text-xs bg-transparent outline-none" />
                 </td>
-                <td className="border border-black p-0 w-40">
+                <td className="border border-black p-0 w-32">
                   <select value={row.type}
                     onChange={(e) => handleChange(log.id, 'type', Number(e.target.value))}
-                    className="w-full p-2 bg-transparent outline-none appearance-none">
+                    className="w-full p-1 text-xs bg-transparent outline-none appearance-none">
                     {DEFECT_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
                   </select>
                 </td>
-                <td className="border border-black p-0 w-36">
+                <td className="border border-black p-0 w-28">
                   <select value={row.injected}
                     onChange={(e) => handleChange(log.id, 'injected', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none appearance-none">
-                    {PHASES.map((p) => <option key={p} value={p}>{p}</option>)}
-                  </select>
-                </td>
-                <td className="border border-black p-0 w-36">
-                  <select value={row.removed}
-                    onChange={(e) => handleChange(log.id, 'removed', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none appearance-none">
+                    className="w-full p-1 text-xs bg-transparent outline-none appearance-none">
                     {PHASES.map((p) => <option key={p} value={p}>{p}</option>)}
                   </select>
                 </td>
                 <td className="border border-black p-0 w-28">
+                  <select value={row.removed}
+                    onChange={(e) => handleChange(log.id, 'removed', e.target.value)}
+                    className="w-full p-1 text-xs bg-transparent outline-none appearance-none">
+                    {PHASES.map((p) => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                </td>
+                <td className="border border-black p-0 w-20">
                   <input type="number" min="0" value={row.fixTime}
                     onChange={(e) => handleChange(log.id, 'fixTime', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none text-center" />
+                    className="w-full p-1 text-xs bg-transparent outline-none text-center" />
                 </td>
                 <td className="border border-black p-0">
                   <input type="text" value={row.description}
                     onChange={(e) => handleChange(log.id, 'description', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none"
+                    className="w-full p-1 text-xs bg-transparent outline-none"
                     placeholder="Brief error description..." />
+                </td>
+                <td className="border border-black p-1 w-20 text-xs text-gray-500 text-center">
+                  {profiles[log.createdBy] || ''}
                 </td>
                 <td className="border border-black p-1 text-center w-24">
                   <div className="flex items-center justify-center gap-1">
@@ -117,7 +120,7 @@ export function DefectRecordingLog({ logs, loading, error, addLog, updateLog, de
               );
             })}
             <tr>
-              <td colSpan="8" className="border border-black p-2 text-center bg-gray-50">
+              <td colSpan="9" className="border border-black p-2 text-center bg-gray-50">
                 <button onClick={handleAdd} className="text-blue-600 font-bold hover:underline">+ Add Defect</button>
               </td>
             </tr>

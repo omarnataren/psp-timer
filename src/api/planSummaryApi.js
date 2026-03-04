@@ -21,7 +21,7 @@ export const getPlanSummary = (projectName) =>
 
 export const upsertPlanRow = (projectName, section, phase, plan, aLaFecha) =>
   api.post(
-    '/plan_summary',
+    '/plan_summary?on_conflict=project_name,section,phase',
     { project_name: projectName, section, phase, plan, a_la_fecha: aLaFecha },
     { headers: { Prefer: 'resolution=merge-duplicates,return=representation' } }
   );

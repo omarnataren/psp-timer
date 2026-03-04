@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PHASES, INITIAL_TIME_ROW, calculateDelta } from '../constants';
 import { ConfirmDialog } from './ConfirmDialog';
 
-export function TimeRecordingLog({ logs, loading, error, addLog, updateLog, deleteLog, headerDate }) {
+export function TimeRecordingLog({ logs, loading, error, addLog, updateLog, deleteLog, headerDate, profiles = {} }) {
   // drafts: { [id]: rowData } — unsaved local edits
   const [drafts, setDrafts] = useState({});
   const [saving, setSaving] = useState({});
@@ -60,8 +60,8 @@ export function TimeRecordingLog({ logs, loading, error, addLog, updateLog, dele
         <table className="w-full border-collapse border border-black mb-6">
           <thead>
             <tr>
-              {['#', 'Date', 'Start', 'Stop', 'Interruption (min)', 'Delta (min)', 'Phase', 'Comments', ''].map((h) => (
-                <th key={h} className="border border-black p-2 text-center text-sm font-bold bg-gray-50">{h}</th>
+              {['#', 'Date', 'Start', 'Stop', 'Int.', 'Delta', 'Phase', 'Comments', 'Por', ''].map((h) => (
+                <th key={h} className="border border-black p-1.5 text-center text-xs font-bold bg-gray-50 whitespace-nowrap">{h}</th>
               ))}
             </tr>
           </thead>
@@ -72,41 +72,44 @@ export function TimeRecordingLog({ logs, loading, error, addLog, updateLog, dele
               const isSaving = !!saving[log.id];
               return (
               <tr key={log.id} className={isDirty ? 'bg-yellow-50' : 'hover:bg-gray-50'}>
-                <td className="border border-black p-2 text-center font-mono text-sm bg-gray-100 w-8">{idx + 1}</td>
+                <td className="border border-black p-1 text-center font-mono text-xs bg-gray-100 w-6">{idx + 1}</td>
                 <td className="border border-black p-0">
                   <input type="date" value={row.date}
                     onChange={(e) => handleChange(log.id, 'date', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none" />
+                    className="w-full p-1 text-xs bg-transparent outline-none" />
                 </td>
-                <td className="border border-black p-0 w-24">
+                <td className="border border-black p-0 w-20">
                   <input type="time" value={row.start}
                     onChange={(e) => handleChange(log.id, 'start', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none font-mono" />
+                    className="w-full p-1 text-xs bg-transparent outline-none font-mono" />
                 </td>
-                <td className="border border-black p-0 w-24">
+                <td className="border border-black p-0 w-20">
                   <input type="time" value={row.stop}
                     onChange={(e) => handleChange(log.id, 'stop', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none font-mono" />
+                    className="w-full p-1 text-xs bg-transparent outline-none font-mono" />
                 </td>
-                <td className="border border-black p-0 w-28">
+                <td className="border border-black p-0 w-16">
                   <input type="number" min="0" value={row.interruption}
                     onChange={(e) => handleChange(log.id, 'interruption', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none text-center" />
+                    className="w-full p-1 text-xs bg-transparent outline-none text-center" />
                 </td>
-                <td className="border border-black p-2 w-24 bg-gray-100 font-mono text-center font-bold">
+                <td className="border border-black p-1 w-16 bg-gray-100 font-mono text-center text-xs font-bold">
                   {row.delta}
                 </td>
-                <td className="border border-black p-0 w-36">
+                <td className="border border-black p-0 w-28">
                   <select value={row.phase}
                     onChange={(e) => handleChange(log.id, 'phase', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none appearance-none">
+                    className="w-full p-1 text-xs bg-transparent outline-none appearance-none">
                     {PHASES.map((p) => <option key={p} value={p}>{p}</option>)}
                   </select>
                 </td>
                 <td className="border border-black p-0">
                   <input type="text" value={row.comments}
                     onChange={(e) => handleChange(log.id, 'comments', e.target.value)}
-                    className="w-full p-2 bg-transparent outline-none" placeholder="..." />
+                    className="w-full p-1 text-xs bg-transparent outline-none" placeholder="..." />
+                </td>
+                <td className="border border-black p-1 w-20 text-xs text-gray-500 text-center">
+                  {profiles[log.createdBy] || ''}
                 </td>
                 <td className="border border-black p-1 text-center w-24">
                   <div className="flex items-center justify-center gap-1">
@@ -126,7 +129,7 @@ export function TimeRecordingLog({ logs, loading, error, addLog, updateLog, dele
               );
             })}
             <tr>
-              <td colSpan="9" className="border border-black p-2 text-center bg-gray-50">
+              <td colSpan="10" className="border border-black p-2 text-center bg-gray-50">
                 <button onClick={handleAdd} className="text-blue-600 font-bold hover:underline">+ Add Row</button>
               </td>
             </tr>
