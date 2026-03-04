@@ -1,16 +1,57 @@
-# React + Vite
+# PSP Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para registrar y gestionar datos del **Personal Software Process (PSP)**: tiempo por fase, defectos y resumen del plan de proyecto. Usa React + Vite en el frontend y Supabase como backend.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Node.js](https://nodejs.org) v18+
+- [pnpm](https://pnpm.io) (`npm install -g pnpm`)
+- Una cuenta en [Supabase](https://supabase.com) con el proyecto y tablas creadas
 
-## React Compiler
+## Configuración
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Clona el repositorio e instala las dependencias:
 
-## Expanding the ESLint configuration
+```bash
+git clone <url-del-repo>
+cd psp-timer
+pnpm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2. Crea el archivo de variables de entorno en la raíz del proyecto:
+
+```bash
+# .env.local
+VITE_SUPABASE_URL=https://<tu-proyecto>.supabase.co
+VITE_SUPABASE_ANON_KEY=<tu-anon-key>
+```
+
+Puedes obtener estos valores en el dashboard de Supabase → **Project Settings → API**.
+
+## Ejecutar en desarrollo
+
+```bash
+pnpm dev
+```
+
+La app estará disponible en [http://localhost:5173](http://localhost:5173).
+
+## Compilar para producción
+
+```bash
+pnpm build
+```
+
+Los archivos compilados quedarán en la carpeta `dist/`.
+
+## Estructura del proyecto
+
+```
+src/
+├── api/          # Llamadas a la API REST de Supabase (axios)
+├── components/   # Componentes de React (UI)
+│   └── auth/     # Páginas de login y registro
+├── hooks/        # Custom hooks (estado y lógica)
+├── lib/          # Configuración de axios y cliente Supabase
+└── constants.js  # Constantes y helpers compartidos
+```
