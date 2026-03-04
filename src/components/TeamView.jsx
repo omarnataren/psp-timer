@@ -13,16 +13,6 @@ export function TeamView({ team, onBack, onOpenProject, currentUserId }) {
 
   return (
     <div className="font-sans">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-1 text-sm font-bold border border-black px-3 py-1.5 hover:bg-gray-100 transition-colors"
-        >
-          ← Equipos
-        </button>
-      </div>
-
       {/* Team name + invite code */}
       <div className="mb-8">
         <h2 className="text-2xl font-bold uppercase tracking-widest">{team.name}</h2>

@@ -46,9 +46,15 @@ export function HomePage({ user, profile, teams, loadingTeams, createTeam, joinT
   // If a team is selected → show team detail
   if (selectedTeam) {
     return (
-      <div className="min-h-screen p-8 font-sans">
+      <div className="min-h-screen p-3 sm:p-8 font-sans">
         <div className="max-w-5xl mx-auto bg-white shadow-lg border border-black p-8">
-          <div className="absolute top-8 right-8">
+          <div className="flex items-center justify-between mb-6">
+            <button
+              onClick={() => setSelectedTeam(null)}
+              className="flex items-center gap-1 text-sm font-bold border border-black px-3 py-1.5 hover:bg-gray-100 transition-colors"
+            >
+              ← Equipos
+            </button>
             <UserMenu user={user} onSignOut={onSignOut} />
           </div>
           <TeamView
